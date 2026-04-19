@@ -1,67 +1,29 @@
 #include <iostream>
-#include <sstream>
 #include <string>
-#include <cmath>
+using namespace std;
 
-class Figure {
-public:
-    virtual double get_square() const = 0;
-    virtual ~Figure();
-};
+bool ok(const string& s) {
+    int n = s.size(), i = 0;
 
-class Rectangle : public Figure {
-private:
-    double w, h;
+    while (i < n && s[i] == '0') i++;
+    int k = i;
+    while (i < n && s[i] == '1') i++;
+    int len = i;
 
-public:
-    Rectangle(double w, double h) : w(w), h(h) {}
+    if (k == 0 || len == k) return false; 
+    if (n % len != 0) return false;
 
-    double get_square() const override {
-        return w * h;
-    }
+    string block = s.substr(0, len);
 
-    static Figure* make(const std::string& str) {
-        std::istringstream iss(str);
-        double w, h;
-        iss >> w >> h;
-        return new Rectangle(w, h);
-    }
-};
+    for (int j = 0; j < n; j += len)
+        if (s.substr(j, len) != block)
+            return false;
 
-class Square : public Figure {
-private:
-    double a;
+    return true;
+}
 
-public:
-    Square(double a) : a(a) {}
-
-    double get_square() const override {
-        return a * a;
-    }
-
-    static Figure* make(const std::string& str) {
-        std::istringstream iss(str);
-        double a;
-        iss >> a;
-        return new Square(a);
-    }
-};
-
-class Circle : public Figure {
-private:
-    double r;
-
-public:
-    Circle(double r) : r(r) {}
-
-    double get_square() const override {
-        return M_PI * r * r;
-    }
-
-    static Figure* make(const std::string& str) {
-        std::istringstream iss(str);
-        double r;
-        iss >> r;
-        return new Circle(r);
-    }
-};
+int main() {
+    string s;
+    while (cin >> s)
+        cout << ok(s) << '\n';
+}

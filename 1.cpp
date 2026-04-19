@@ -1,32 +1,32 @@
 #include <iostream>
 #include <string>
-#include <exception>
 
-class Printer {
-    std::string s;
+bool is_ok(const std::string& s) {
+    bool second = false; 
 
-public:
-    explicit Printer(const std::string& str) : s(str) {}
-
-    ~Printer() {
-        std::cout << s << '\n';
-    }
-};
-
-void solve() {
-    std::string s;
-    if (!(std::cin >> s)) {
-        throw 1;
+    for (char c : s) {
+        if (c == '3' || c == '4') {
+            if (second) {
+                return false; 
+            }
+        } else if (c == '1' || c == '2') {
+            second = true;
+        } else {
+            return false; 
+        }
     }
 
-    Printer p(s);
-    solve();
+    return true;
 }
 
 int main() {
-    try {
-        solve();
-    } catch (...) {
+    std::string s;
+    while (std::cin >> s) {
+        if (is_ok(s)) {
+            std::cout << 1 << std::endl;
+        } else {
+            std::cout << 0 << std::endl;
+        }
     }
     return 0;
 }
